@@ -1,0 +1,123 @@
+<head>
+  <title>Carnatic Artist Database</title>
+</head>
+
+<body>
+  <h1>Welcome to the Carnatic Artist Database</h1>
+  <a href="/">Home</a>&nbsp;|&nbsp;<a href="/search">Search</a>&nbsp;|&nbsp;<a href="/update">Create/Update</a>
+  <hr>
+</body>
+
+<template name="Home">
+  <b>Use the links above to browse or edit the database.</b>
+</template>
+
+<template name="Search">
+  <b>Search for artists in the database</b>
+  <br>
+  <form>
+    Name: <input type="text" id="search_entry_name">
+    <button type="button" id="search_name">Search</button>
+  </form>
+  <br><br>
+  <b>Cart:</b>
+  <ul>
+    {{#each docs}}
+      <li>
+        {{name}}
+        <button type="button" id="{{id}}" class="removeCart">Remove</button>
+      </li>
+    {{/each}}
+  </ul>
+  <br><br>
+  <button id="exportCart">Export Records</button>
+</template>
+
+<template name="UpdateCreate">
+  {{#if currentUser}}
+    {{> accountScreen}}
+  {{else}}
+    <b>Login or Create and Account</b>
+    <br>
+    {{> loginButtons}}
+  {{/if}}
+</template>
+
+<template name="accountScreen">
+  {{#if currentUser}}
+    {{> loginButtons}}
+    <hr>
+    <i>Click to edit</i>
+    <br><br>
+    Account Id: {{account_id}}
+    <br><br>
+    <div id="show_name">
+      Name: {{account_name}}
+    </div>
+    <div id="edit_name" class="edit">
+      <form>
+        <input type="text" id="entry_name" name="entry_name">
+      </form>
+    </div>
+    <br>
+    <div id="show_bio">
+      Bio: {{account_bio}}
+    </div>
+    <div id="edit_bio" class="edit">
+      <form>
+        <textarea id="entry_bio" name="entry_bio" cols="40" rows="10"></textarea>
+      </form>
+    </div>
+    <br>
+    Contact Email: {{account_email}}
+    <br>
+    <div id="formSubmit" class="edit">
+      <button id="update">Update</button>
+      <button id="cancel">Cancel</button>
+    </div>
+  {{/if}}
+</template>
+
+<template name="DisplayResults">
+  <b>Search Results</b>
+  <br>
+  <ul>
+    {{#each results}}
+      <li><a href="/artist/{{id}}">{{name}}</a></li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="DisplayArtist">
+  <h2>Artist Bio</h2>
+  <b>{{name}}</b>
+  <hr>
+  <b>{{bio}}</b>
+  <hr>
+  <button id="addToCart">Add to List</button>
+</template>
+
+<template name="Export">
+  <h3>Export</h3>
+  <br>
+  <table border="1">
+    {{#each jsonData}}
+      <tr>
+        <td>
+          {{name}}
+        </td>
+        <td>
+          {{bio}}
+        </td>
+        <td>
+          {{email}}
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+  <hr>
+  {{#each jsonForm}}
+    {{.}}
+    <br><br>
+  {{/each}}
+</template>
